@@ -1,0 +1,16 @@
+version: "3"
+
+name: "privategpt_local"
+
+services:
+  private_gpt:
+    platform: linux/amd64
+    image: private_gpt:latest
+    volumes:
+      - /Users/peterhickman/fred/db:/app/db:rw
+      - /Users/peterhickman/fred/source_documents:/app/source_documents
+    environment:
+      - MODEL=mistral
+      - OLLAMA_BASE_URL=http://192.168.1.15:11434
+    restart:
+      unless-stopped

@@ -1,0 +1,33 @@
+version: "3"
+
+name: "privategpt_with_ollama"
+
+services:
+  private_gpt:
+    platform: linux/amd64
+    image: private_gpt:latest
+    hostname: gpt
+    volumes:
+      - /Users/peterhickman/fred/db:/app/db:rw
+      - /Users/peterhickman/fred/source_documents:/app/source_documents
+    environment:
+      - MODEL=mistral
+      - OLLAMA_BASE_URL=http://ollama:11434
+    networks:
+      - gpt-net
+    restart:
+      unless-stopped
+  ollama:
+    image: ollama/ollama
+    hostname: ollama
+    volumes:
+      - /Users/peterhickman/.ollama:/root/.ollama:rw
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - gpt-net
+    restart:
+      unless-stopped
+
+networks:
+  gpt-net: {}
